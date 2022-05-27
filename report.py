@@ -114,7 +114,6 @@ class ZJUHealthReport(object):
 
 def main(user, passwd, ua):
     msg = None
-
     reporter = ZJUHealthReport(user, passwd, ua)
     print('[Time] %s' % datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     print('打卡任务启动...')
@@ -127,11 +126,12 @@ def main(user, passwd, ua):
     try:
         if reporter.is_form_updated():
             msg = '表单已更新，请更新程序'
+            print(msg)
             return msg
-    except:
-        msg = '表单核对失败,请手动检查'
+    except Exception as e:
+        msg = '表单核对失败,请手动检查: ' + str(e)
+        print(msg)
         return msg
-    reporter.get_payload()
     res = reporter.post()
     if res['m'].startswith('操作成功'):
         msg = '打卡成功'
