@@ -129,7 +129,6 @@ def main(user, passwd, ua):
         print('今日已打卡，提交无效')
     else:
         print('打卡状态异常，请手动检查:', res)
-    print()
     return
 
 
