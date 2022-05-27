@@ -72,7 +72,7 @@ class ZJUHealthReport(object):
             form_current = re.search(r'<ul>[\s\S]*?</ul>', self.res.text).group()
         except Exception:
             raise RegexMatchError('正则表达式匹配失败，请检查表单是否更新')
-        with open('./form.html', 'r', encoding='utf-8') as f:
+        with open('./sample_form.html', 'r', encoding='utf-8') as f:
             if form_current == f.read():
                 return False        
         return True
