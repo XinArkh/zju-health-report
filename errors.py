@@ -11,3 +11,8 @@ class RegexMatchError(Exception):
 class DecodeError(Exception):
     """JSON Decode Exception"""
     pass
+
+
+class FormUpdateError(Exception):
+    """Form Update Exception"""
+    pass
