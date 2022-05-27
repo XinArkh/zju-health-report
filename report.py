@@ -124,9 +124,12 @@ def main(user, passwd, ua):
         msg = '今日已打卡，程序中止'
         print(msg)
         return msg
-    if reporter.is_form_updated():
-        # raise FormUpdateError('表单已更新，请更新程序')
-        msg = '表单已更新，请更新程序'
+    try:
+        if reporter.is_form_updated():
+            msg = '表单已更新，请更新程序'
+            return msg
+    except:
+        msg = '表单核对失败,请手动检查'
         return msg
     reporter.get_payload()
     res = reporter.post()
