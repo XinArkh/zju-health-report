@@ -6,6 +6,8 @@ import datetime
 import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+
+import message
 from errors import *
 
 
@@ -111,28 +113,36 @@ class ZJUHealthReport(object):
 
 
 def main(user, passwd, ua):
+    msg = None
+
     reporter = ZJUHealthReport(user, passwd, ua)
     print('[Time] %s' % datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     print('打卡任务启动...')
     reporter.login()
     print('登录成功')
     if reporter.is_reported():
-        print('今日已打卡，退出程序')
-        return
+        msg = '今日已打卡，程序中止'
+        print(msg)
+        return msg
     if reporter.is_form_updated():
-        raise FormUpdateError('表单已更新，请更新程序')
+        # raise FormUpdateError('表单已更新，请更新程序')
+        msg = '表单已更新，请更新程序'
+        return msg
     reporter.get_payload()
     res = reporter.post()
-    if res['e'] == '0':
-        print('打卡成功')
+    if res['m'].startswith('操作成功'):
+        msg = '打卡成功'
+        print(msg)
     elif res['m'].startswith('今天已经填报了'):
-        print('今日已打卡，提交无效')
+        msg = '今日已打卡，提交无效'
+        print(msg)
     else:
-        print('打卡状态异常，请手动检查:', res)
-    return
+        msg = '打卡状态异常，请手动检查: %s' % res
+        print(msg)
+    return msg
 
 
 if __name__ == '__main__':
-    from user_key import user, passwd, ua
-
-    main(user, passwd, ua)
+    from user_key import user, passwd, ua, dingtalk_access_token
+    msg = main(user, passwd, ua)
+    message.dingtalk_robot(msg, dingtalk_access_token)

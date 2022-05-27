@@ -13,7 +13,7 @@ def dingtalk_robot(msg, access_token):
         }
     }
     requests.post(webhook, data=json.dumps(payload), headers=headers)
-    print('发送成功', message)
+    print('钉钉机器人发送成功:', message)
 
 
 if __name__ == '__main__':
