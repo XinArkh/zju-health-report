@@ -1,5 +1,6 @@
 import re
 import time
+import json
 import random
 import datetime
 import requests
@@ -27,11 +28,16 @@ class ZJUHealthReport(object):
         self.sess.mount('http://', adapter)
         self.sess.mount('https://', adapter)
 
+        self.res = None
+        self.payload = None
+
     def login(self):
         """登陆页面"""
         res = self.sess.get(self.login_url)
-        execution = re.search('name="execution" value="(.*?)"', res.text).group(1)
+        time.sleep(random.random())
+        execution = re.search(r'name="execution" value="(.*?)"', res.text).group(1)
         res = self.sess.get(url=self.key_url).json()
+        time.sleep(random.random())
         e_str, m_str = res['exponent'], res['modulus']
         passwd_encrypt = self.rsa_encrypt(self.passwd, e_str, m_str)
         payload = {
@@ -41,12 +47,58 @@ class ZJUHealthReport(object):
             '_eventId': 'submit'
         }
         res = self.sess.post(url=self.login_url, data=payload)
+        time.sleep(random.random())
 
         if '统一身份认证' in res.text:
             raise LoginError('登录失败，请核实账号密码重新登录')
+        else:
+            self.res = res
 
-        time.sleep(random.random()*2)
+    def is_reported(self):
+        """检查是否已经打卡"""
+        if not self.res:
+            self.res = self.sess.get(index_url)
+            time.sleep(random.random())
+        if "hasFlag: '1'" in self.res.text:
+            return True
+        return False
 
+    def is_form_updated(self):
+        """检查打卡表单是否发生变动"""
+        if not self.res:
+            self.res = self.sess.get(index_url)
+            time.sleep(random.random())
+        try:
+            form_current = re.search(r'<ul>[\s\S]*?</ul>', self.res.text).group()
+        except Exception:
+            raise RegexMatchError('正则表达式匹配失败，请检查表单是否更新')
+        with open('./form.html', 'r', encoding='utf-8') as f:
+            if form_current == f.read():
+                return False        
+        return True
+
+    def get_payload(self):
+        """获取旧的打卡记录，并作为新提交表单的信息"""
+        if not self.res:
+            self.res = self.sess.get(index_url)
+            time.sleep(random.random())
+        old_info = re.search(r'oldInfo: ({[^\n]+})', self.res.text).group(1)
+        # old_info = old_info.encode('utf-8').decode('unicode_escape')  # 不可提前解码中文，否则json失效
+        payload = json.loads(old_info)
+        magic_codes = re.search(r'"(\w{32})": ?"(\w{10})", ?"(\w{32})": ?"(\w{32})"[\s\S]{1,50}oldInfo', self.res.text).groups()
+        magic_codes_dict = {magic_codes[0]: magic_codes[1], 
+                            magic_codes[2]: magic_codes[3]}
+        payload.update(magic_codes_dict)
+        payload['date'] = datetime.datetime.now().strftime('%Y%m%d')
+        self.payload = payload
+
+    def post(self):
+        """上传打卡信息"""
+        if not self.payload:
+            self.get_payload()
+        time.sleep(random.random())
+        res = self.sess.post(self.save_url, data=self.payload)
+        return json.loads(res.text)
 
     @staticmethod
     def rsa_encrypt(passwd_str, e_str, m_str):
@@ -63,12 +115,25 @@ def main(user, passwd, ua):
     print('[Time] %s' % datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     print('打卡任务启动...')
     reporter.login()
-    print('成功登录！')
+    print('登录成功')
+    if reporter.is_reported():
+        print('今日已打卡，退出程序')
+        return
+    if reporter.is_form_updated():
+        raise FormUpdateError('表单已更新，请更新程序')
+    reporter.get_payload()
+    res = reporter.post()
+    if res['e'] == '0':
+        print('打卡成功')
+    elif res['m'].startswith('今天已经填报了'):
+        print('今日已打卡，提交无效')
+    else:
+        print('打卡状态异常，请手动检查:', res)
+    print()
+    return
 
 
 if __name__ == '__main__':
-    user = 'xxx'
-    passwd = 'xxx'
-    ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36'
+    from user_key import user, passwd, ua
 
     main(user, passwd, ua)
