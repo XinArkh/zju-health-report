@@ -41,7 +41,7 @@ service cron restart  # 重启 cron 服务
 
 ## 说明
 
-未部署 GitHub Actions 服务，一是本人已有现成的校内服务器，省去进一步折腾的麻烦；二是 [GitHub Actions 属于境外 ip](https://github.com/yep96/ZJU_healthreport#zju_healthreport)，需要承担额外的未知风险。当然，如果你手头没有可用的校内/境内服务器，也可以自行尝试搭建 GitHub Actions 服务，本仓库不承担任何责任。
+未部署 GitHub Actions 服务，一是本人已有现成的校内服务器，省去进一步折腾的麻烦；二是 [GitHub Actions 属于境外 ip](https://github.com/yep96/ZJU_healthreport#zju_healthreport)，需要承担额外的未知风险。当然，如果你手头没有可用的校内/境内服务器，也可以自行尝试搭建基于本仓库代码的 GitHub Actions 服务，本仓库不承担任何责任。另外，GitHub 上其实已有另一个[匿名组织](https://github.com/zju-health-report)提供了该服务，可酌情参考。
 
 ## 参考
 
