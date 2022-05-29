@@ -45,7 +45,7 @@ service cron restart  # 重启 cron 服务
 
 ## 参考
 
-- [Long0x0/ZJU_nCov]([https://github.com/Long0x0/ZJU-nCov](https://github.com/Long0x0/ZJU-nCov-Hitcarder-Sample)) (原仓库链接已失效，[此处提供一个备份](https://github.com/XinArkh/ZJU_nCov))
+- [Long0x0/ZJU_nCov](https://github.com/Long0x0/ZJU-nCov-Hitcarder-Sample) (原仓库链接已失效，[此处提供一个备份](https://github.com/XinArkh/ZJU_nCov))
 - [yep96/ZJU_healthreport](https://github.com/yep96/ZJU_healthreport)
 
 在此一并感谢。
