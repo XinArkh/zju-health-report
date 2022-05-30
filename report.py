@@ -94,7 +94,8 @@ class ZJUHealthReport(object):
         magic_codes_dict = {magic_codes[0]: magic_codes[1], 
                             magic_codes[2]: magic_codes[3]}
         payload.update(magic_codes_dict)
-        payload['date'] = datetime.datetime.now().strftime('%Y%m%d')
+        payload['date'] = (datetime.datetime.now() - 
+                           datetime.timedelta(days=1)).strftime('%Y%m%d')  # 网页post的数据总是前一天日期，原因未知
         self.payload = payload
 
     def post(self):
