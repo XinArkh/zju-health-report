@@ -30,7 +30,7 @@ chmod +x /PATH/TO/zju-health-report/report.py
 ```bash
 crontab -e  # 进入编辑界面
 
-# 每天的0分钟、0时执行命令（我的系统中使用UTC时区，相比中国慢8小时）
+# 每天的0分钟、0时执行命令（我的系统中使用 UTC 时区，相比中国慢8小时）
 0 0 * * * /PATH/TO/zju-health-report/report.py >> /PATH/TO/report.log
 
 # 退出编辑界面
@@ -41,7 +41,7 @@ service cron restart  # 重启 cron 服务
 
 ## 说明
 
-未部署 GitHub Actions 服务，一是本人已有现成的校内服务器，省去进一步折腾的麻烦；二是 [GitHub Actions 属于境外 ip](https://github.com/yep96/ZJU_healthreport#zju_healthreport)，需要承担额外的未知风险。当然，如果你手头没有可用的校内/境内服务器，也可以自行尝试搭建基于本仓库代码的 GitHub Actions 服务，本仓库不承担任何责任。另外，GitHub 上其实已有另一个[匿名组织](https://github.com/zju-health-report)提供了该服务，可酌情参考。
+未部署 GitHub Actions 服务，一是本人已有现成的校内服务器，省去进一步折腾的麻烦；二是 [GitHub Actions 属于境外 IP](https://github.com/yep96/ZJU_healthreport#zju_healthreport)，需要承担额外的未知风险。当然，如果你手头没有可用的校内/境内服务器，也可以自行尝试搭建基于本仓库代码的 GitHub Actions 服务，本仓库不承担任何责任。另外，GitHub 上其实已有另一个[匿名组织](https://github.com/zju-health-report)提供了该服务，可酌情参考。
 
 ## 参考
 
