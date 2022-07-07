@@ -96,12 +96,30 @@ class ZJUHealthReport(object):
         old_info = re.search(r'oldInfo: ({[^\n]+})', self.res.text).group(1)
         # old_info = old_info.encode('utf-8').decode('unicode_escape')  # 不可提前解码中文，否则json失效
         payload = json.loads(old_info)
+        
+        # 生成校验码项并添加到字典
         magic_codes = re.search(r'"(\w{32})": ?"(\w{10})", ?"(\w{32})": ?"(\w{32})"[\s\S]{1,50}oldInfo', self.res.text).groups()
         magic_codes_dict = {magic_codes[0]: magic_codes[1], 
                             magic_codes[2]: magic_codes[3]}
         payload.update(magic_codes_dict)
+
+        # 添加实际提交数据中字典不含的项目
+        payload['gwszdd'] = ''
+        payload['szgjcs'] = ''
+        payload['verifyCode'] = ''
+        payload['zgfx14rfhsj'] = ''
+        
+        # 修改实际提交数据中需要重新编辑的项目
         payload['date'] = (datetime.datetime.now() - 
-                           datetime.timedelta(days=1)).strftime('%Y%m%d')  # 网页post的数据总是前一天日期，原因未知
+                           datetime.timedelta(days=1)).strftime('%Y%m%d')  # 提交的数据总是前一天日期，原因未知
+        payload['jcqzrq'] = ''  # 未知项目，捕捉到为None，实际提交为空
+        
+        # 去除实际提交数据中不包含的项目
+        if 'created_uid' in payload.keys():
+            payload.pop('created_uid')
+        if 'jrdqtlqk' in payload.keys():
+            payload.pop('jrdqtlqk')
+
         self.payload = payload
 
     def post(self):
