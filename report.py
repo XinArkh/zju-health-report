@@ -140,7 +140,8 @@ class ZJUHealthReport(object):
         return hex(result_int)[2:].rjust(128, '0')
 
 
-def main(user, passwd, ua):
+def main(user, passwd, ua, delay=0):
+    time.sleep( 60 * random.uniform(0, delay) ) # delay单位为分钟，从0到该分钟随机分布
     msg = None
     reporter = ZJUHealthReport(user, passwd, ua)
     print('[Time] %s' % datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
@@ -175,5 +176,5 @@ def main(user, passwd, ua):
 
 if __name__ == '__main__':
     from user_key import user, passwd, ua, dingtalk_access_token
-    msg = main(user, passwd, ua)
+    msg = main(user, passwd, ua, delay=30)
     message.dingtalk_robot(msg, dingtalk_access_token)
