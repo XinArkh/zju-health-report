@@ -8,8 +8,8 @@ import json
 import random
 import datetime
 import requests
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
+from requests.adapters import HTTPAdapter, Retry
+# from requests.packages.urllib3.util.retry import Retry
 
 import message
 from errors import *
