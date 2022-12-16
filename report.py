@@ -82,7 +82,7 @@ class ZJUHealthReport(object):
                   os.path.join(
                                os.path.abspath(os.path.dirname(__file__)), 
                                'sample_form.html'
-                               ), 
+                              ), 
                   'r', encoding='utf-8') as f:
             if form_current == f.read():
                 return False        
