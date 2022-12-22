@@ -61,6 +61,20 @@
                                     </div>
                                 </div>
                             </li>
+                            <li v-show="info.tw == 1">
+                                <div name="sfczyxqx" class="radio"><span>是否存在以下情形： Whether there are any of the following situations:<i class="icon iconfont icon-shuoming"></i><em></em></span>
+                                    <div>
+                                        <div @click="info.sfczyxqx=1"><span :class="{active: info.sfczyxqx==1}"><i></i></span> <span>经药物治疗3天后，体温持续高于38.5℃ After 3 days of medicine treatment, the body temperature is continuously higher than 38.5°C</span></div>
+                                        <div @click="info.sfczyxqx=2"><span :class="{active: info.sfczyxqx==2}"><i></i></span> <span>呼吸费力或气促，呼吸≥24次/分，血氧饱和度≤93% Dyspnea or shortness of breath, respiration ≥ 24 times/min, blood oxygen saturation ≤ 93%</span></div>
+                                        <div @click="info.sfczyxqx=3"><span :class="{active: info.sfczyxqx==3}"><i></i></span> <span>胸闷、心前区不适、心率大于100次/分钟 Chest tightness, precordial discomfort, heart rate greater than 100 beats/min</span></div>
+                                        <div @click="info.sfczyxqx=4"><span :class="{active: info.sfczyxqx==4}"><i></i></span> <span>较长时间的剧烈咳嗽，痰多 Severe cough with profuse phlegm for a long period</span></div>
+                                        <div @click="info.sfczyxqx=5"><span :class="{active: info.sfczyxqx==5}"><i></i></span> <span>出现急性过敏反应、血管神经性水肿等症状 Symptoms such as acute allergic reaction and nuerological angioedema</span></div>
+                                        <div @click="info.sfczyxqx=6"><span :class="{active: info.sfczyxqx==6}"><i></i></span> <span>头晕、头痛、嗜睡或惊厥、癫痫等神经系统症状无法缓解 Nerve system symptoms such as dizziness, headache, drowsiness or convulsions and epilepsy that cannot be alleviated</span></div>
+                                        <div @click="info.sfczyxqx=7"><span :class="{active: info.sfczyxqx==7}"><i></i></span> <span>高热且伴有基础疾病（如：心血管系统疾病、糖尿病、肥胖、脂肪肝、肝肾功能不全、免疫系统疾病、肿瘤等）明显加重且不能控制 High fever accompanied by underlying diseases (such as: cardiovascular system diseases, diabetes, obesity, fatty liver, liver and kidney function insufficiency, immune system diseases, tumors, etc.) are significantly aggravated and cannot be controlled</span></div>
+                                        <div @click="info.sfczyxqx=8"><span :class="{active: info.sfczyxqx==8}"><i></i></span> <span>不存在上述情况 None of the above situations exist</span></div>
+                                    </div>
+                                </div>
+                            </li>
                             <li>
                                 <div name="sfqrxxss" class="radio">
                                     <div>
